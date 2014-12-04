@@ -92,7 +92,8 @@ class Term
     public function toJsonArray()
     {
         return array(
-            'term' => $this->getText(),
+            'id'   => $this->getId(),
+            'text' => $this->getText(),
         );
     }
 
