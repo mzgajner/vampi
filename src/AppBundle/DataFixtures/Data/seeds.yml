@@ -1,0 +1,10 @@
+AppBundle\Entity\Discipline:
+  disciplineDraw:
+    name: Draw
+    machineName: draw
+  disciplineShow:
+    name: Show
+    machineName: show
+  disciplineTell:
+    name: Tell
+    machineName: tell

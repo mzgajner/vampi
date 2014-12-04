@@ -1,0 +1,3 @@
+AppBundle\Entity\Term:
+  term{1..100}:
+    text: <word()>
