@@ -25,9 +25,16 @@ class Term
     /**
      * @var string
      *
-     * @ORM\Column(name="text", type="string", length=255)
+     * @ORM\Column(name="text", type="string", length=255, unique=true)
      */
     private $text;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lang", type="string", length=10)
+     */
+    private $lang;
 
     /**
      * @var Session[]|ArrayCollection
@@ -35,6 +42,16 @@ class Term
      * @ORM\OneToMany(targetEntity="Session", mappedBy="term")
      */
     private $sessions;
+
+    function __construct($text, $lang)
+    {
+        if (!empty($text)) {
+            $this->text = $text;
+        }
+        if (!empty($lang)) {
+            $this->lang = $lang;
+        }
+    }
 
     /**
      * Get id
@@ -67,6 +84,26 @@ class Term
     public function getText()
     {
         return $this->text;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLang()
+    {
+        return $this->lang;
+    }
+
+    /**
+     * @param string $lang
+     *
+     * @return $this
+     */
+    public function setLang($lang)
+    {
+        $this->lang = $lang;
+
+        return $this;
     }
 
     /**

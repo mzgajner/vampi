@@ -98,6 +98,25 @@
             <arg name="fixtures" value="src/AppBundle/DataFixtures/ORM/Seed" />
             <arg value="--no-interaction" />
         </SymfonyConsole>
+
+        <SymfonyConsole command="vampi:fill"
+                        checkreturn="true">
+            <arg value="http://www.rtvslo.si/" />
+            <arg value="sl" />
+        </SymfonyConsole>
+
+        <SymfonyConsole command="vampi:fill"
+                        checkreturn="true">
+            <arg value="http://www.english-zone.com/language/english.html" />
+            <arg value="en" />
+        </SymfonyConsole>
+
+        <SymfonyConsole command="vampi:fill"
+                        checkreturn="true">
+            <arg value="http://www.blick.ch/news" />
+            <arg value="de" />
+        </SymfonyConsole>
+
     </target>
 
 </project>
