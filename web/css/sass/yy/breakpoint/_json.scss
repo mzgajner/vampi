@@ -1,0 +1,57 @@
+@import "helpers";
+
+/**
+ * Encodes information about your breakpoints from Sass and allows you to access it from JavaScript to use with 
+ * libraries like [enquire.js](//wicky.nillia.ms/enquire.js/) without having to repeat your media queries in JS code.
+ *
+ * This presumes you are using the yy's `respond-to` mixin. Or at least include the `breakpoint/helpers` and define your
+ * breakpoints in the prescribed Sass map. To use, simply include it anywhere in your stylesheets like in the example.
+ *
+ * It will generate a `::before` pseudo element on the document body and store information about breakpoints encoded in a
+ * JSON array inside its `content` property. To read it, you need a few lines of JavaScript, provided in `examples/breakpoint/json.js`.
+ *
+ * @example scss
+ *   $breakpoints: (
+ *      small:     (
+ *          mq: "(min-width:  400px) and (max-width:  767px)",
+ *      ),
+ *      small-up:  (
+ *          min-width: 400px
+ *      ),
+ *      medium:    (
+ *          media: screen,
+ *          min-width: 768px,
+ *          max-width: 991px,
+ *      ),
+ *      medium-up: (
+ *          media: screen,
+ *          min-width: 768px,
+ *      ),
+ *      large:     (
+ *          mq: "(min-width:  992px) and (max-width: 1299px)",
+ *      ),
+ *      large-up:  (
+ *          mq: "(min-width:  992px)",
+ *      ),
+ *      x-large:   (
+ *          mq: "(min-width: 1300px)"
+ *      )
+ *   );
+ *   @include json;
+ * 
+ * @group breakpoint
+ */
+@mixin json {
+    $breakpoint-json: null;
+
+    @each $bp-name, $bp-value in $yy-breakpoint-map {
+        $breakpoint-json: append($breakpoint-json, \"#{$bp-name}\" + ":" + \"#{getMediaQuery($bp-name)}\", comma);
+    }
+
+    $breakpoint-json: "{" + $breakpoint-json + "}";
+
+    body::before {
+        content: $breakpoint-json;
+        display: none;
+    }
+}

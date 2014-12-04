@@ -1,0 +1,134 @@
+/**
+ * @group font
+ **/
+
+@import "helpers";
+@import "../breakpoint/respond-to";
+
+/**
+ * If true, `responsive-font` uses @extend by default
+ *
+ * @type Bool
+ *
+ */
+$responsive-font-extend-fontstyles: true !default;
+
+$placeholder-fonts-list: ();
+
+/**
+ * Sets all properties defined in the global map `$fonts` for the given `$fontstyleName`
+ *
+ * @param {String}    $fontstyleName - the name of the font, a 1st level key in `$fonts`
+ * @param {*|Boolean} $line-height (false) - if given, overwrites the line-height from the font settings
+ * @param {*|Boolean} $color (false) - if given, overwrites the color from the font settings
+ * @param {Boolean}   $extendFontstyle ($responsive-font-extend-fontstyles) - if true @extend is used, otherwise properties are written to the selector that calls this mixin
+ *
+ * @example scss
+ * $font-family-helvetica: "Helvetica, sans-serif";
+ * $fonts: (
+ *   // give your fontstyle a name and define how they should look
+ *   fontstyle-one: (
+ *     font-size: 30px,       //this is required and must be in px if you want to use getPaddingForHeight()
+ *     line-height: 35px,     //this is required and must be in px if you want to use getPaddingForHeight()
+ *     font-family: $font-family-helvetica,
+ *     font-weight: normal,
+ *     color: black
+ *     respond-to: (          //define how the font responds to different media queries
+ *       medium-up: (         //use the named media queries from yy/breakpoint/respond-to
+ *         font-size: 32px,   //overwrite or add additional properties as you like
+ *         color: red
+ *       )
+ *     )
+ *   ),
+ *   fontstyle-two: (
+ *     inherit: fontstyle-one,    //you can inherit other fontstyles
+ *     font-size: 25px,
+ *     line-height: 30px,
+ *     font-style: italic,
+ *     color: grey
+ *   ),
+ * );
+ *
+ */
+@mixin responsive-font($fontstyleName, $line-height: false, $color: false, $extendFontstyle: $responsive-font-extend-fontstyles) {
+    $fontstyle: getFontStyle($fontstyleName);
+
+    @if $line-height != false or $color != false {
+        $extendFontstyle: false;
+    }
+
+    @if $extendFontstyle == true {
+        @if not index($placeholder-fonts-list, $fontstyleName) {
+            @at-root {
+                %font-#{$fontstyleName} {
+                    @include _setAllFontStyles($fontstyle, $line-height, $color);
+                }
+            }
+            $placeholder-fonts-list: append($placeholder-fonts-list, $fontstyleName) !global;
+        }
+        @extend %font-#{$fontstyleName};
+    } @else {
+        @include _setAllFontStyles($fontstyle, $line-height, $color);
+    }
+}
+
+/**
+ * Just a wrapper around `responsive-font` that sets `$extendFontstye` no false
+ *
+ * @param {String}    $fontstyleName - the name of the font, a 1st level key in `$fonts`
+ * @param {*|Boolean} $line-height - if given, overwrites the line-height from the font settings
+ * @param {*|Boolean} $color - if given, overwrites the color from the font settings
+ *
+ */
+@mixin responsive-font-no-extend($fontstyleName, $line-height: false, $color: false) {
+    @include responsive-font($fontstyleName, $line-height, $color, false);
+}
+
+/**
+ * Sets all the properties in `$fontstyle`, ignores keys `respond-to` and `inherit`
+ * If `line-height` or `$color` is given, this overwrites the key from the given map
+ *
+ * @param {String}    $fontstyle - a map of properties to apply
+ * @param {*|Boolean} $line-height - if given, overwrites the line-height from the font settings
+ * @param {*|Boolean} $color - if given, overwrites the color from the font settings
+ *
+ */
+@mixin _setFontStyle($fontstyle, $line-height, $color) {
+    $responsive-font-keywords: ("respond-to", "inherit");
+
+    @if $line-height != false {
+        $responsive-font-keywords: append($responsive-font-keywords, "line-height");
+        line-height: $line-height;
+    }
+    @if $color != false {
+        $responsive-font-keywords: append($responsive-font-keywords, "color");
+        color: $color;
+    }
+
+    @each $property, $value in $fontstyle {
+        @if not index($responsive-font-keywords, $property) {
+            #{$property}: unquote($value);
+        }
+    }
+}
+      
+/**
+ * Sets all the properties in `$fontstyle` for all breakpoints by using `respond-to` mixin and calling `_setFontStyle`
+ * If `line-height` or `$color` is given, this overwrites the key from the given map for all breakpoints
+ *
+ * @param {String}    $fontstyle - a map of properties to apply
+ * @param {*|Boolean} $line-height - if given, overwrites the line-height from the font settings
+ * @param {*|Boolean} $color - if given, overwrites the color from the font settings
+ *
+ */  
+@mixin _setAllFontStyles($fontstyle, $line-height, $color) {
+    @include _setFontStyle($fontstyle, $line-height, $color);
+    //check for respond-to definition, then set these
+    @if map-has-key($fontstyle, respond-to) {
+        @each $media, $respondToFontstyle in map-get($fontstyle, respond-to) {
+            @include respond-to($media) {
+                @include _setFontStyle($respondToFontstyle, $line-height, $color);
+            }
+        }
+    }
+}

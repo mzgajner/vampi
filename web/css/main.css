@@ -1,50 +1,280 @@
+/**
+ *
+ * @group breakpoint
+ *
+ **/
+/**
+ * The sass map holding the breakpoint information
+ * Defaults to `$breakpoints`
+ *
+ * @type Map
+ *
+ */
+/**
+ * Returns a media query string by resolving the settings from `$yy-breakpoint-map` map
+ * If you have imported Memo from SassyMaps, this is used to store the computed media queries.
+ * @link https://github.com/Team-Sass/Sassy-Maps#memo
+ *
+ * @param {String}    $breakpoint - the name of breakpoint from global `$yy-breakpoint-map` map
+ *
+ */
+/**
+ * Returns a combined media query for the passed `$breakpoints` by calling `getMediaQuery` for
+ * for every breakpoint in the list and comma separating the return values.
+ *
+ * @param {String|List}    $breakpoints - A single breakpoint name or a list of multiple breakpoint names
+ *
+ * @group breakpoint
+ */
+/**
+ * Registers a new breakpoint in the global `$yy-breakpoint-map`
+ * After you registered a new breakpoint, you can use it in `respond-to` as well as in font-definitions.
+ * Make sure to register your breakpoint before the first use in `respond-to` or in `responsive-font` calling a
+ * named font that has definitions for this breakpoint.
+ *
+ * Any of the parameters are technically optional altought to do something you need to pass at least `$name`
+ * and `$mq` or any of the other parameters.
+ *
+ * @param {String} $name (false)           - the name of the new breakpoint
+ * @param {String} $mq (false)             - a complete media query string
+ * @param {String} $media (false)          - the `media` to use in the media query
+ * @param {String} $min-width (false)      - min-width
+ * @param {String} $max-width (false)      - max-width
+ * @param {String} $min-height (false)     - min-height
+ * @param {String} $max-height (false)     - max-height
+ * @param {String} $orientation (false)    - orientation
+ *
+ * @example scss
+ * $registered: registerBreakpoint(my-new-breakpoint, $media: screen, $min-width: 900px, $orientation: landscape);
+ *
+ * @group breakpoint
+ */
+/**
+ * This is just a mixin wrapper around `@function registerBreakpoint` for your convenience if you don't care to check if
+ * your breakpoint actually got registered.
+ * This allows for shorter sass code as you need to assign the return value of the function to something.
+ *
+ * Any of the parameters are technically optional altought to do something you need to pass at least `$name`
+ * and `$mq` or any of the other parameters.
+ *
+ * @param {String} $name (false) - the name of the new breakpoint
+ * @param {String} $mq (false)             - a complete media query string
+ * @param {String} $media (false)          - the `media` to use in the media query
+ * @param {String} $min-width (false)      - min-width
+ * @param {String} $max-width (false)      - max-width
+ * @param {String} $min-height (false)     - min-height
+ * @param {String} $max-height (false)     - max-height
+ * @param {String} $orientation (false)    - orientation
+ *
+ * @example scss
+ *  @include registerBreakpoint(my-new-breakpoint, $media: screen, $min-width: 900px, $orientation: landscape);
+ *
+ * @group breakpoint
+ */
+/**
+ * @group breakpoint
+ **/
+/**
+ *
+ * @group breakpoint
+ *
+ **/
+/**
+ * The sass map holding the breakpoint information
+ * Defaults to `$breakpoints`
+ *
+ * @type Map
+ *
+ */
+/**
+ * Returns a media query string by resolving the settings from `$yy-breakpoint-map` map
+ * If you have imported Memo from SassyMaps, this is used to store the computed media queries.
+ * @link https://github.com/Team-Sass/Sassy-Maps#memo
+ *
+ * @param {String}    $breakpoint - the name of breakpoint from global `$yy-breakpoint-map` map
+ *
+ */
+/**
+ * Returns a combined media query for the passed `$breakpoints` by calling `getMediaQuery` for
+ * for every breakpoint in the list and comma separating the return values.
+ *
+ * @param {String|List}    $breakpoints - A single breakpoint name or a list of multiple breakpoint names
+ *
+ * @group breakpoint
+ */
+/**
+ * Registers a new breakpoint in the global `$yy-breakpoint-map`
+ * After you registered a new breakpoint, you can use it in `respond-to` as well as in font-definitions.
+ * Make sure to register your breakpoint before the first use in `respond-to` or in `responsive-font` calling a
+ * named font that has definitions for this breakpoint.
+ *
+ * Any of the parameters are technically optional altought to do something you need to pass at least `$name`
+ * and `$mq` or any of the other parameters.
+ *
+ * @param {String} $name (false)           - the name of the new breakpoint
+ * @param {String} $mq (false)             - a complete media query string
+ * @param {String} $media (false)          - the `media` to use in the media query
+ * @param {String} $min-width (false)      - min-width
+ * @param {String} $max-width (false)      - max-width
+ * @param {String} $min-height (false)     - min-height
+ * @param {String} $max-height (false)     - max-height
+ * @param {String} $orientation (false)    - orientation
+ *
+ * @example scss
+ * $registered: registerBreakpoint(my-new-breakpoint, $media: screen, $min-width: 900px, $orientation: landscape);
+ *
+ * @group breakpoint
+ */
+/**
+ * This is just a mixin wrapper around `@function registerBreakpoint` for your convenience if you don't care to check if
+ * your breakpoint actually got registered.
+ * This allows for shorter sass code as you need to assign the return value of the function to something.
+ *
+ * Any of the parameters are technically optional altought to do something you need to pass at least `$name`
+ * and `$mq` or any of the other parameters.
+ *
+ * @param {String} $name (false) - the name of the new breakpoint
+ * @param {String} $mq (false)             - a complete media query string
+ * @param {String} $media (false)          - the `media` to use in the media query
+ * @param {String} $min-width (false)      - min-width
+ * @param {String} $max-width (false)      - max-width
+ * @param {String} $min-height (false)     - min-height
+ * @param {String} $max-height (false)     - max-height
+ * @param {String} $orientation (false)    - orientation
+ *
+ * @example scss
+ *  @include registerBreakpoint(my-new-breakpoint, $media: screen, $min-width: 900px, $orientation: landscape);
+ *
+ * @group breakpoint
+ */
+/**
+ * This gets the media query by using `getCombinedMediaQuery` for the given named breakpoint(s)
+ * and wraps everything that is within this mixin in `@media`
+ *
+ * To work, the mixin requires configuration in the form of a Sass map where keys are names for 
+ * breakpoints/screen sizes you should provide yourself as `$yy-breakpoint-map`(this is the 
+ * `$breakpoint` parameter you pass when calling the mixin) and values are maps of settings for
+ * the respectable breakpoint.
+ *
+ * If you provide a `mq` key in the map for the breakpoint, this is used as the media query.
+ * Otherwise the media query is build out of `media`, `max-width`, `min-width`, `max-height`, `min-height` and `orientation`
+ * If you need other media features in your media query, provide it in the `mq` value.
+ *
+ * @param {String|List}    $breakpoint - the name of breakpoint from global `$yy-breakpoint-map` map or a list of breakpoints
+ *
+ * @example scss
+ * $breakpoints: (
+ *    small:     (
+ *        mq: "(min-width:  400px) and (max-width:  767px)",
+ *    ),
+ *    small-up:  (
+ *        min-width: 400px
+ *    ),
+ *    medium:    (
+ *        media: screen,
+ *        min-width: 768px,
+ *        max-width: 991px,
+ *    ),
+ *    medium-up: (
+ *        media: screen,
+ *        min-width: 768px,
+ *    ),
+ *    large:     (
+ *        mq: "(min-width:  992px) and (max-width: 1299px)",
+ *    ),
+ *    large-up:  (
+ *        mq: "(min-width:  992px)",
+ *    ),
+ *    x-large:   (
+ *        mq: "(min-width: 1300px)"
+ *    )
+ * );
+ *
+ * #some-selector {
+ *    @include respond-to(small) {
+ *        background: green;
+ *    }
+ *    @include respond-to(medium x-large) {
+ *        background: purple;
+ *    }
+ * }
+ */
+html, body {
+  height: 100%; }
+
 body {
   font-family: Lato, Helvetica, Arial, sans-serif;
   font-size: 16px; }
 
-.page-main-menu {
-  text-align: center; }
-  .page-main-menu .title {
-    font-size: 64px;
-    font-weight: bold; }
-  .page-main-menu .image {
-    display: block;
-    margin: 36px auto;
-    width: 300px; }
-  .page-main-menu .btn {
-    font-size: 36px; }
+p {
+  margin: 0; }
 
-.page-discipline {
-  text-align: center; }
-  .page-discipline .btn {
-    font-size: 36px;
-    display: block;
-    width: 100%;
-    margin: 24px 0; }
+main {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: -webkit-flex;
+  -webkit-justify-content: center;
+  -webkit-align-items: center; }
 
-.page-word {
-  text-align: center; }
-  .page-word .hint {
-    margin: 120px 0 36px 0;
-    font-size: 24px; }
-  .page-word .word {
-    font-size: 50px;
-    margin-bottom: 50px; }
-  .page-word .question {
-    margin-top: 110px; }
-
-.page-summary {
-  text-align: center; }
-  .page-summary .result {
-    font-size: 24px;
-    margin-top: 130px; }
-  .page-summary .btn {
-    font-size: 36px;
-    display: block;
-    width: 100%;
-    margin: 24px 0; }
+@media (min-width: 768px) {
+  .container {
+    width: 767px !important; } }
 
 .progress-bar {
-  transition: width 60s linear; }
+  transition: width 60s linear;
+  background-color: #333; }
+
+.page-main-menu, .page-discipline, .page-word, .page-summary {
+  text-align: center;
+  display: block;
+  width: 100%; }
+  @media (min-width: 768px) {
+    .page-main-menu, .page-discipline, .page-word, .page-summary {
+      width: auto; } }
+  .page-main-menu .btn, .page-discipline .btn, .page-word .btn, .page-summary .btn {
+    font-size: 28px;
+    display: block;
+    width: 100%;
+    margin: 24px 0; }
+    @media (min-width: 768px) {
+      .page-main-menu .btn, .page-discipline .btn, .page-word .btn, .page-summary .btn {
+        font-size: 45.30495px;
+        max-width: 400px;
+        margin: 24px auto; } }
+  .page-main-menu .text, .page-discipline .text, .page-word .text, .page-summary .text {
+    font-size: 24px; }
+    @media (min-width: 768px) {
+      .page-main-menu .text, .page-discipline .text, .page-word .text, .page-summary .text {
+        font-size: 38.83282px; } }
+
+.page-main-menu .title {
+  font-size: 48px;
+  font-weight: bold; }
+  @media (min-width: 768px) {
+    .page-main-menu .title {
+      font-size: 77.66563px; } }
+.page-main-menu .image {
+  display: block;
+  margin: 36px auto;
+  width: 250px; }
+  @media (min-width: 768px) {
+    .page-main-menu .image {
+      width: 404.5085px; } }
+
+.page-word .word {
+  font-size: 50px;
+  margin-bottom: 50px; }
+  @media (min-width: 768px) {
+    .page-word .word {
+      font-size: 80.9017px; } }
+.page-word .question {
+  margin-top: 110px; }
+  .page-word .question p {
+    font-size: 18px; }
+    @media (min-width: 768px) {
+      .page-word .question p {
+        font-size: 29.12461px; } }
 
 /*# sourceMappingURL=main.css.map */

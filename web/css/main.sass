@@ -1,58 +1,85 @@
 @import sass/colors
+@import sass/settings
+
+@import sass/yy/breakpoint/helpers
+@import sass/yy/breakpoint/respond-to
+
+$golden-ratio: 1.61803398875
+
+html, body
+    height: 100%
 
 body
     font-family: Lato, Helvetica, Arial, sans-serif
     font-size: 16px
     
-.page-main-menu
-    text-align: center
+p
+    margin: 0
     
+main
+    height: 100%
+    display: flex
+    justify-content: center
+    align-items: center
+    display: -webkit-flex
+    -webkit-justify-content: center
+    -webkit-align-items: center
+
+.container
+    +respond-to(medium-up)
+        width: 767px !important
+
+.progress-bar
+    transition: width 60s linear
+    background-color: #333
+
+
+.page-main-menu, .page-discipline, .page-word, .page-summary
+    text-align: center
+    display: block
+    width: 100%
+    +respond-to(medium-up)
+        width: auto
+    .btn
+        font-size: 28px
+        display: block
+        width: 100%
+        margin: 24px 0
+        +respond-to(medium-up)
+            font-size: 28px * $golden-ratio
+            max-width: 400px
+            margin: 24px auto
+
+    .text
+        font-size: 24px
+        +respond-to(medium-up)
+            font-size: 24px * $golden-ratio
+
+.page-main-menu
     .title
-        font-size: 64px
+        font-size: 48px
+        +respond-to(medium-up)
+            font-size: 48px * $golden-ratio
+
         font-weight: bold
 
     .image
         display: block
         margin: 36px auto
-        width: 300px
-    
-    .btn
-        font-size: 36px
-        
-.page-discipline
-    text-align: center
-
-    .btn
-        font-size: 36px
-        display: block
-        width: 100%
-        margin: 24px 0
+        width: 250px    
+        +respond-to(medium-up)
+            width: 250px * $golden-ratio    
         
 .page-word
-    text-align: center
-    .hint
-        margin: 120px 0 36px 0
-        font-size: 24px
-        
     .word
         font-size: 50px
         margin-bottom: 50px
+        +respond-to(medium-up)
+            font-size: 50px * $golden-ratio    
         
     .question
         margin-top: 110px
-        
-.page-summary
-    text-align: center
-    
-    .result
-        font-size: 24px
-        margin-top: 130px
-
-    .btn
-        font-size: 36px
-        display: block
-        width: 100%
-        margin: 24px 0
-
-.progress-bar
-    transition: width 60s linear
+        p
+            font-size: 18px
+            +respond-to(medium-up)
+                font-size: 18px * $golden-ratio    

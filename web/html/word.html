@@ -1,7 +1,7 @@
 <div class="page-word">
     <div class="container">
         
-        <p class="hint">Your word is:</p>
+        <p class="text">Your word is:</p>
 
         <h2 class="word">{{ term.text ? term.text : '&nbsp;' }}</h2>
 
@@ -10,19 +10,19 @@
         </div>
         
         <div class="row" ng-if="!started">
-            <div class="question">
-                <p class="question">Ready to go?</p>
+            <div class="question col-xs-12">
+                <p>Ready to go?</p>
             </div>
-            <div class="button">
+            <div class="buttons col-xs-12">
                 <button type="button" class="btn btn-lg btn-default" ng-click="start()">Go!</button>
             </div>
         </div>
 
         <div class="row" ng-if="started">
-            <div class="question">
-                <p class="question">Did you guess?</p>
+            <div class="question col-xs-12">
+                <p>Did you guess?</p>
             </div>
-            <div class="button">
+            <div class="buttons">
                 <div class="col-xs-6">
                     <button type="button" class="btn btn-lg btn-success" ng-click="redirect()">Yes</button>
                 </div>

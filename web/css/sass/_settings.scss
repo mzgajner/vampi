@@ -1,0 +1,34 @@
+$breakpoint-small: 320px;
+$breakpoint-medium: 768px;
+$breakpoint-large: 940px;
+$breakpoint-x-large: 1170px;
+
+$breakpoints: (
+    mobile: (
+        max-width: $breakpoint-medium - 1
+    ),
+    small:     (
+        min-width: $breakpoint-small + 1,
+        max-width: $breakpoint-medium - 1
+    ),
+    small-up:  (
+        min-width: $breakpoint-small + 1
+    ),
+    medium:     (
+        min-width: $breakpoint-medium,
+        max-width: $breakpoint-large - 1
+    ),
+    medium-up:  (
+        min-width: $breakpoint-medium
+    ),
+    large:     (
+        min-width: $breakpoint-large,
+        max-width: $breakpoint-x-large - 1
+    ),
+    large-up:  (
+        min-width: $breakpoint-large
+    ),
+    x-large:  (
+        min-width: $breakpoint-x-large
+    )
+);

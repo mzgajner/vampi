@@ -1,0 +1,79 @@
+/**
+ * @group sprite
+ **/
+
+@import "compass/utilities/sprites";
+/**
+ * Allows you to include two versions of a sprited image from two different sprite maps made for low and high resolution screens.
+ *
+ * The maps must include images with identical names. You are also required to provide a configuration object (Sass map)
+ * with references to different versions of maps. See the example below.
+ *
+ * Default values are provided for `$repeat`, `$width` and `$height` so they can be omitted in the most typical use case.
+ *
+ * `$repeat` can be overridden with any valid value for `background-repeat` CSS property if you want to use the sprite as a repeating background image.
+ * Make sure to [configure the sprite layout](http://beta.compass-style.org/help/tutorials/spriting/sprite-layouts/) when generating map with Compass.
+ *
+ * `$width` and `$height` may be set to `false` to disable output of sprite dimensions as `width` and `height` properties in the generated CSS.
+ *
+ * @param {String}    $map - the name of the map, this needs to be a 1st level key of `$sprite-maps`
+ * @param {String}    $sprite - the original filename without extension of the image you want as background
+ * @param {String}    $repeat (no-repeat) - the value of `background-repeat`
+ * @param {Boolean}   $width (true) - if true, the width gets set to the image-width
+ * @param {Boolean}   $height (true) - if true, the height gets set to the image-height
+ * @param {Boolean}   $addVendorPrefixes (false) - if true, background-size is added with -webkit-, -moz and -o- prefixes
+ *
+ * @requires compass/utilities/sprites
+ *
+ * @example scss
+ * $logo-map: sprite-map("images/*.png");
+ * $logo-hidpi-map: sprite-map("images-hidpi/*.png");
+
+ * $sprite-maps: (logos: (low-dpi: $logo-map, high-dpi: $logo-hidpi-map));
+
+ * #astina-logo {
+ *     @include responsive-sprite(logos, astina);
+ * }
+ * #sass-logo {
+ *     @include responsive-sprite(logos, sass);
+ * }
+ *
+ */
+@mixin responsive-sprite($map, $sprite, $repeat: no-repeat, $width: true, $height: true, $addVendorPrefixes: false) {
+    $low-dpi-map: map-get(map-get($sprite-maps, $map), low-dpi);
+    $high-dpi-map: map-get(map-get($sprite-maps, $map), high-dpi);
+
+    background-image: sprite-url($low-dpi-map);
+    background-position: sprite-position($low-dpi-map, $sprite);
+    background-repeat: $repeat;
+
+    @if $width == true {
+        width: image-width(sprite-file($low-dpi-map, $sprite));
+    }
+    @if $height == true {
+        height: image-height(sprite-file($low-dpi-map, $sprite));
+    }
+
+    @media (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi) {
+        background-image: sprite-url($high-dpi-map);
+        $pos: sprite-position($high-dpi-map, $sprite);
+        background-position: nth($pos, 1) nth($pos, 2) / 2;
+        background-repeat: $repeat;
+
+        @if $addVendorPrefixes == true {
+            -webkit-background-size: ceil(image-width(sprite-path($high-dpi-map)) / 2) auto;
+            -moz-background-size: ceil(image-width(sprite-path($high-dpi-map)) / 2) auto;
+            -o-background-size: ceil(image-width(sprite-path($high-dpi-map)) / 2) auto;
+        }
+
+        background-size: ceil(image-width(sprite-path($high-dpi-map)) / 2) auto;
+
+        @if $width == true {
+            width: image-width(sprite-file($high-dpi-map, $sprite)) / 2;
+        }
+
+        @if $height == true {
+            height: image-height(sprite-file($high-dpi-map, $sprite)) / 2;
+        }
+    }
+}

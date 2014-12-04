@@ -1,0 +1,201 @@
+/**
+ *
+ * @group breakpoint
+ *
+ **/
+
+/**
+ * The sass map holding the breakpoint information
+ * Defaults to `$breakpoints`
+ *
+ * @type Map
+ *
+ */
+$yy-breakpoint-map: $breakpoints !default;
+
+$memo-exists: function-exists(memo-get) and function-exists(memo-set);
+
+/**
+ * Returns a media query string by resolving the settings from `$yy-breakpoint-map` map
+ * If you have imported Memo from SassyMaps, this is used to store the computed media queries.
+ * @link https://github.com/Team-Sass/Sassy-Maps#memo
+ *
+ * @param {String}    $breakpoint - the name of breakpoint from global `$yy-breakpoint-map` map
+ *
+ */
+@function getMediaQuery($breakpoint) {
+    $mq: '';
+
+    @if $memo-exists {
+        $result: memo-get(yy-respond-to-media-query, $breakpoint);
+        @if $result != null {
+            @return $result;
+        }
+    }
+
+    //if mq is defined, return this
+    @if map-get(map-get($yy-breakpoint-map, $breakpoint), mq) != null {
+        $mq: map-get(map-get($yy-breakpoint-map, $breakpoint), mq);
+    } @else {
+        //otherwise we combine the media query with the given media, min-width, max-width, min-height, max-height and orientation settings
+        @if map-get(map-get($yy-breakpoint-map, $breakpoint), media) != null {
+            $mq: $mq + map-get(map-get($yy-breakpoint-map, $breakpoint), media);
+        }
+
+        @if map-get(map-get($yy-breakpoint-map, $breakpoint), min-width) != null {
+            @if $mq != '' {
+                $mq: $mq + ' and ';
+            }
+            $mq: $mq + '(min-width:' + map-get(map-get($yy-breakpoint-map, $breakpoint), min-width) + ')';
+        }
+
+        @if map-get(map-get($yy-breakpoint-map, $breakpoint), max-width) != null {
+            @if $mq != '' {
+                $mq: $mq + ' and ';
+            }
+            $mq: $mq + '(max-width:' + map-get(map-get($yy-breakpoint-map, $breakpoint), max-width) + ')';
+        }
+
+        @if map-get(map-get($yy-breakpoint-map, $breakpoint), min-height) != null {
+            @if $mq != '' {
+                $mq: $mq + ' and ';
+            }
+            $mq: $mq + '(min-height:' + map-get(map-get($yy-breakpoint-map, $breakpoint), min-height) + ')';
+        }
+
+        @if map-get(map-get($yy-breakpoint-map, $breakpoint), max-height) != null {
+            @if $mq != '' {
+                $mq: $mq + ' and ';
+            }
+            $mq: $mq + '(max-height:' + map-get(map-get($yy-breakpoint-map, $breakpoint), max-height) + ')';
+        }
+
+        @if map-get(map-get($yy-breakpoint-map, $breakpoint), orientation) != null {
+            @if $mq != '' {
+                $mq: $mq + ' and ';
+            }
+            $mq: $mq + '(orientation:' + map-get(map-get($yy-breakpoint-map, $breakpoint), orientation) + ')';
+        }
+    }
+
+    @if $mq == '' {
+        $mq: false;
+    }
+
+    @if $memo-exists {
+        $holder: memo-set(yy-respond-to-media-query, $breakpoint, $mq);
+    }
+
+    @return $mq;
+}
+
+/**
+ * Returns a combined media query for the passed `$breakpoints` by calling `getMediaQuery` for
+ * for every breakpoint in the list and comma separating the return values.
+ *
+ * @param {String|List}    $breakpoints - A single breakpoint name or a list of multiple breakpoint names
+ *
+ * @group breakpoint
+ */
+@function getCombinedMediaQuery($breakpoints) {
+    $mq: '';
+    @each $bp in $breakpoints {
+        $bpMq: getMediaQuery($bp);
+        @if $bpMq == false {
+            @return false;
+        } @else {
+            $mq: $mq + getMediaQuery($bp) + ',';
+        }
+    }
+    @return str-slice($mq, 1, -2);
+}
+
+/**
+ * Registers a new breakpoint in the global `$yy-breakpoint-map`
+ * After you registered a new breakpoint, you can use it in `respond-to` as well as in font-definitions.
+ * Make sure to register your breakpoint before the first use in `respond-to` or in `responsive-font` calling a
+ * named font that has definitions for this breakpoint.
+ *
+ * Any of the parameters are technically optional altought to do something you need to pass at least `$name`
+ * and `$mq` or any of the other parameters.
+ *
+ * @param {String} $name (false)           - the name of the new breakpoint
+ * @param {String} $mq (false)             - a complete media query string
+ * @param {String} $media (false)          - the `media` to use in the media query
+ * @param {String} $min-width (false)      - min-width
+ * @param {String} $max-width (false)      - max-width
+ * @param {String} $min-height (false)     - min-height
+ * @param {String} $max-height (false)     - max-height
+ * @param {String} $orientation (false)    - orientation
+ *
+ * @example scss
+ * $registered: registerBreakpoint(my-new-breakpoint, $media: screen, $min-width: 900px, $orientation: landscape);
+ *
+ * @group breakpoint
+ */
+@function registerBreakpoint($name: false, $mq: false, $media: false, $min-width: false, $max-width: false, $min-height: false, $max-height: false, $orientation: false) {
+    $new-bp: ();
+    $valid: false;
+    @if $mq {
+        $new-bp: map-merge($new-bp, (mq: $mq));
+        $valid: true;
+    }
+    @if $min-width {
+        $new-bp: map-merge($new-bp, (min-width: $min-width));
+        $valid: true;
+    }
+    @if $media {
+        $new-bp: map-merge($new-bp, (media: $media));
+        $valid: true;
+    }
+    @if $max-width {
+        $new-bp: map-merge($new-bp, (max-width: $max-width));
+        $valid: true;
+    }
+    @if $min-height {
+        $new-bp: map-merge($new-bp, (min-height: $min-height));
+        $valid: true;
+    }
+    @if $max-height {
+        $new-bp: map-merge($new-bp, (max-height: $max-height));
+        $valid: true;
+    }
+    @if $orientation {
+        $new-bp: map-merge($new-bp, (orientation: $orientation));
+        $valid: true;
+    }
+    @if $valid {
+        @if $name {
+            $yy-breakpoint-map: map-merge($yy-breakpoint-map, ($name: $new-bp)) !global;
+        } @else {
+            $valid: false;
+        }
+    }
+    @return $valid;
+}
+
+/**
+ * This is just a mixin wrapper around `@function registerBreakpoint` for your convenience if you don't care to check if
+ * your breakpoint actually got registered.
+ * This allows for shorter sass code as you need to assign the return value of the function to something.
+ *
+ * Any of the parameters are technically optional altought to do something you need to pass at least `$name`
+ * and `$mq` or any of the other parameters.
+ *
+ * @param {String} $name (false) - the name of the new breakpoint
+ * @param {String} $mq (false)             - a complete media query string
+ * @param {String} $media (false)          - the `media` to use in the media query
+ * @param {String} $min-width (false)      - min-width
+ * @param {String} $max-width (false)      - max-width
+ * @param {String} $min-height (false)     - min-height
+ * @param {String} $max-height (false)     - max-height
+ * @param {String} $orientation (false)    - orientation
+ *
+ * @example scss
+ *  @include registerBreakpoint(my-new-breakpoint, $media: screen, $min-width: 900px, $orientation: landscape);
+ *
+ * @group breakpoint
+ */
+@mixin registerBreakpoint($name: false, $mq: false, $media: false, $min-width: false, $max-width: false, $min-height: false, $max-height: false, $orientation: false) {
+    $registered: registerBreakpoint($name, $mq, $media, $min-width, $max-width, $min-height, $max-height, $orientation); 
+}

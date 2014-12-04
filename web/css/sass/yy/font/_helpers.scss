@@ -1,0 +1,129 @@
+/**
+ * @group font
+ **/
+
+/**
+ * The sass map holding the font specs
+ * Defaults to `$fonts`
+ *
+ * @type Map
+ */
+$yy-fonts-map: $fonts !default;
+
+/**
+ * Returns the fontstyle as a map by recursively resolving any inherited fontstyle
+ *
+ * @param {String} $fontstyleName - the name of the font, a 1st level key in `$fonts`
+ *
+ * @returns {Map}  The fontstyle as a map of properties
+ *
+ */
+@function getFontStyle($fontstyleName) {
+    $fontstyle: map-get($yy-fonts-map, $fontstyleName);
+    @if map-has-key($fontstyle, inherit) {
+        $fontstyleToInherit: getFontStyle(map-get($fontstyle, inherit));
+
+        // merge respond-to first if both fontstyles have it
+        $respondTo: false;
+        @if (map-has-key($fontstyleToInherit, respond-to) and map-has-key($fontstyle, respond-to)) {
+            $respondTo: map-get($fontstyle, respond-to);
+            @each $breakpoint, $inheritedProperties in map-get($fontstyleToInherit, respond-to) {
+                $newRespondToBreakpoint: ();
+
+                // check if the fontstyle has definitions for the same breakpoint as the inherited one
+                @if (map-has-key($respondTo, $breakpoint)) {
+                    // it has, so we merge them together
+                    $newRespondToBreakpoint: map-get($respondTo, $breakpoint);
+                    $newRespondToBreakpoint: map-merge($inheritedProperties, $newRespondToBreakpoint);
+                } @else {
+                    // nope, so we just use the ones from the inherited breakpoint
+                    $newRespondToBreakpoint: $inheritedProperties;
+                }
+
+                // then we overwrite the old with the new breakpoint definitions
+                $respondTo: map-merge($respondTo, ($breakpoint: $newRespondToBreakpoint));
+            }
+        }
+
+        $fontstyle: map-merge($fontstyleToInherit, $fontstyle);
+
+        @if $respondTo != false {
+            // overwrite the old with the merged respond-to definitions
+            $fontstyle: map-merge($fontstyle, (respond-to: ($respondTo)));
+        }
+    }
+    @return $fontstyle;
+}
+
+/**
+ * Returns the value of a specific property of a fontstyle.
+ *
+ * @param {String} $fontstyleName - the name of the font, a 1st level key in `$fonts`
+ * @param {String} $property - the property you want to get the value for
+ *
+ * @returns {*}  The value of the property or null if it's not available
+ *
+ */
+@function getFontStyleProperty($fontstyleName, $property) {
+    @return map-get(getFontStyle($fontstyleName), $property);
+}
+
+/**
+ * Registers a new fontstyle in the global `$yy-fonts-map`
+ *
+ * Any of the parameters are technically optional altought to do something you need to pass at least `$name`
+ * and either `inherit` (makes not a lot of sense alone), a map of `properties` and any adaption rules for breakpoints in `respond-to`.
+ *
+ * @param {String} $name (false)           - the name of the new fontstyle
+ * @param {String} $inherit (false)        - the name of the fontstyle to inherit
+ * @param {String} $properties (false)     - a map of CSS properties
+ * @param {String} $respond-to (false)     - a map of breakpoint names containing a map of css properties
+ *
+ * @example scss
+ * $registered: registerFontstyle($name: my-new-fontstyle, $inhert: an-existing-fontstyle, ( font-size: 20px, line-height: 1.2em ), ( medium-up: ( font-size: 23px ) );
+ *
+ */
+@function registerFontstyle($name: false, $inherit: false, $properties: (), $respond-to: false) {
+    $new-fontstyle: ();
+    $valid: false;
+    @if $inherit {
+        $new-fontstyle: map-merge($new-fontstyle, (inherit: $inherit));
+        $valid: true;
+    }
+    @if $properties {
+        @each $property, $value in $properties {
+            $new-fontstyle: map-merge($new-fontstyle, ($property: $value));
+        }
+        $valid: true;
+    }
+    @if $respond-to {
+        $new-fontstyle: map-merge($new-fontstyle, (respond-to: $respond-to));
+        $valid: true;
+    }
+    @if $valid {
+        @if $name {
+            $yy-fonts-map: map-merge($yy-fonts-map, ($name: $new-fontstyle)) !global;
+        } @else {
+            $valid: false;
+        }
+    }
+    @return $valid;
+}
+
+/**
+ * This is just a mixin wrapper around `@function registerBreakpoint` for your convenience if you don't care to check if
+ * your breakpoint actually got registered.
+ * This allows for shorter sass code as you need to assign the return value of the function to something.
+ *
+ * @param {String} $name (false)           - the name of the new fontstyle
+ * @param {String} $inherit (false)        - the name of the fontstyle to inherit
+ * @param {String} $properties (false)     - a map of CSS properties
+ * @param {String} $respond-to (false)     - a map of breakpoint names containing a map of css properties
+ *
+ * @example scss
+ * $registered: registerFontstyle($name: my-new-fontstyle, $inhert: an-existing-fontstyle, ( font-size: 20px, line-height: 1.2em ), ( medium-up: ( font-size: 23px ) );
+ *
+ */
+@mixin registerFontstyle($name: false, $inherit: false, $properties: (), $respond-to: false) {
+    $registered: registerFontstyle($name, $inherit, $properties, $respond-to); 
+}

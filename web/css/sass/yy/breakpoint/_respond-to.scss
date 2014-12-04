@@ -1,0 +1,68 @@
+/**
+ * @group breakpoint
+ **/
+
+@import "helpers";
+
+/**
+ * This gets the media query by using `getCombinedMediaQuery` for the given named breakpoint(s)
+ * and wraps everything that is within this mixin in `@media`
+ *
+ * To work, the mixin requires configuration in the form of a Sass map where keys are names for 
+ * breakpoints/screen sizes you should provide yourself as `$yy-breakpoint-map`(this is the 
+ * `$breakpoint` parameter you pass when calling the mixin) and values are maps of settings for
+ * the respectable breakpoint.
+ *
+ * If you provide a `mq` key in the map for the breakpoint, this is used as the media query.
+ * Otherwise the media query is build out of `media`, `max-width`, `min-width`, `max-height`, `min-height` and `orientation`
+ * If you need other media features in your media query, provide it in the `mq` value.
+ *
+ * @param {String|List}    $breakpoint - the name of breakpoint from global `$yy-breakpoint-map` map or a list of breakpoints
+ *
+ * @example scss
+ * $breakpoints: (
+ *    small:     (
+ *        mq: "(min-width:  400px) and (max-width:  767px)",
+ *    ),
+ *    small-up:  (
+ *        min-width: 400px
+ *    ),
+ *    medium:    (
+ *        media: screen,
+ *        min-width: 768px,
+ *        max-width: 991px,
+ *    ),
+ *    medium-up: (
+ *        media: screen,
+ *        min-width: 768px,
+ *    ),
+ *    large:     (
+ *        mq: "(min-width:  992px) and (max-width: 1299px)",
+ *    ),
+ *    large-up:  (
+ *        mq: "(min-width:  992px)",
+ *    ),
+ *    x-large:   (
+ *        mq: "(min-width: 1300px)"
+ *    )
+ * );
+ *
+ * #some-selector {
+ *    @include respond-to(small) {
+ *        background: green;
+ *    }
+ *    @include respond-to(medium x-large) {
+ *        background: purple;
+ *    }
+ * }
+ */
+@mixin respond-to($breakpoint) {
+    $mediaQuery: getCombinedMediaQuery($breakpoint);
+    @if $mediaQuery == false {
+        @error "Unable to generate media query for breakpoint(s) #{$breakpoint}"
+    } @else {
+        @media #{$mediaQuery} {
+            @content;
+        }
+    }
+}

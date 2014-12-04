@@ -1,0 +1,249 @@
+/**
+ * @group breakpoint
+ **/
+
+@import "respond-to";
+
+/**
+ * The Sass List containing all valid display values.
+ * This list is taken from https://developer.mozilla.org/en-US/docs/Web/CSS/display
+ *
+ * @type List
+ */
+$yy-valid-display-values: inline block list-item inline-block inline-table table table-cell table-column table-column-group table-footer-group table-header-group table-row table-row-group flex inline-flex grid inline-grid run-in ruby ruby-base ruby-text ruby-base-container ruby-text-container !default;
+
+/**
+ * This hides the element per default and adds whatever value is passed as `$display` to the `display` attribute
+ * as long as it's a valid value according to the formal syntax described at https://developer.mozilla.org/en-US/docs/Web/CSS/display
+ *
+ * @param {List}    $breakpoints - a list of breakpoint names where the element should have the passed value for `display`
+ * @param {String}  $display (block) - the value of the `display` attribute
+ *
+ * @example scss
+ *   $breakpoints: (
+ *      small:     (
+ *          mq: "(min-width:  400px) and (max-width:  767px)",
+ *      ),
+ *      medium:    (
+ *          media: screen,
+ *          min-width: 768px,
+ *          max-width: 991px,
+ *      ),
+ *      large-up:  (
+ *          mq: "(min-width:  992px)",
+ *      ),
+ *   );
+ *   @include show-for(medium large-up, flex);
+ *
+ */
+@mixin show-for($breakpoints, $display: block) {
+    @if (index($yy-valid-display-values, $display) == null) {
+        @debug "ERROR: #{$display} is not a valid value for display";
+    } @else {
+        display: none;
+        @each $breakpoint in $breakpoints {
+            @include respond-to($breakpoint) {
+                display: $display;
+            }
+        }
+    }
+}
+
+/**
+ * This hides the element per default and adds `display:block` for the passed `$breakpoints`.
+ *
+ * @param {List}    $breakpoints - a list of breakpoint names where the element should have `display: block`
+ *
+ * @example scss
+ *   $breakpoints: (
+ *      small:     (
+ *          mq: "(min-width:  400px) and (max-width:  767px)",
+ *      ),
+ *      medium:    (
+ *          media: screen,
+ *          min-width: 768px,
+ *          max-width: 991px,
+ *      ),
+ *      large-up:  (
+ *          mq: "(min-width:  992px)",
+ *      ),
+ *   );
+ *   @include block-for(medium large-up);
+ *
+ */
+@mixin block-for($breakpoints) {
+    @include show-for($breakpoints,block);
+}
+
+/**
+ * This hides the element per default and adds `display:inline` for the passed `$breakpoints`.
+ *
+ * @param {List}    $breakpoints - a list of breakpoint names where the element should have `display: inline`
+ *
+ * @example scss
+ *   $breakpoints: (
+ *      small:     (
+ *          mq: "(min-width:  400px) and (max-width:  767px)",
+ *      ),
+ *      medium:    (
+ *          media: screen,
+ *          min-width: 768px,
+ *          max-width: 991px,
+ *      ),
+ *      large-up:  (
+ *          mq: "(min-width:  992px)",
+ *      ),
+ *   );
+ *   @include inline-for(medium large-up);
+ *
+ */
+@mixin inline-for($breakpoints) {
+    @include show-for($breakpoints,inline);
+}
+
+/**
+ * This hides the element per default and adds `display: inline-block` for the passed `$breakpoints`.
+ *
+ * @param {List}    $breakpoints - a list of breakpoint names where the element should have `display: inline-block`
+ *
+ * @example scss
+ *   $breakpoints: (
+ *      small:     (
+ *          mq: "(min-width:  400px) and (max-width:  767px)",
+ *      ),
+ *      medium:    (
+ *          media: screen,
+ *          min-width: 768px,
+ *          max-width: 991px,
+ *      ),
+ *      large-up:  (
+ *          mq: "(min-width:  992px)",
+ *      ),
+ *   );
+ *   @include inline-for(medium large-up);
+ *
+ */
+@mixin inline-block-for($breakpoints) {
+    @include show-for($breakpoints,inline-block);
+}
+
+/**
+ * This hides the element for the passed `$breakpoints`.
+ *
+ * @param {List}    $breakpoints - a list of breakpoint names where the element should have `display: none`
+ *
+ * @example scss
+ *   $breakpoints: (
+ *      small:     (
+ *          mq: "(min-width:  400px) and (max-width:  767px)",
+ *      ),
+ *      medium:    (
+ *          media: screen,
+ *          min-width: 768px,
+ *          max-width: 991px,
+ *      ),
+ *      large-up:  (
+ *          mq: "(min-width:  992px)",
+ *      ),
+ *   );
+ *   @include hide-for(large-up);
+ *
+ */
+@mixin hide-for($breakpoints) {
+    @each $breakpoint in $breakpoints {
+        @include respond-to($breakpoint) {
+            display: none;
+        }
+    }
+}
+
+/**
+ * The Sass List with the visibility classes that are generated, when you don't pass the `$classes`
+ * parameter to `add-visibility-classes`
+ * Defaults to `show-for, block-for, inline-for, inline-block-for, hide-for`
+ *
+ * @type List
+ *
+ */
+$yy-visibility-classes: show-for, hide-for !default;
+
+/**
+ * Generates visibility classes for the passed breakpoints.
+ * If not specified, visibility classes for all breakpoints defined in $yy-breakpoint-map are generated.
+ * at the moment this mixin is called.
+ * 
+ * `$classes` parameter can be any combination of these:
+ *   - show-for
+ *   - block-for (aliase: visible-for)
+ *   - inline-for
+ *   - inline-block-for
+ *   - hide-for (alias: hidden-for)
+ *
+ * Note that aliases are not generated by default, they just use the same css.
+ *
+ * If you need other visibility classes, you can easily create them on your own by using the mixin `@show-for`.
+ * This mixin adds some unsemantic classes which can be considered a bad thing, so you should probably not go
+ * crazy with stuff like `inline-for-small flex-for-medium ...`.
+ * That's also the reason for the default of `$yy-visibility-classes` being `show-for, hide-for` where `show-for`
+ * results in  `display: block`.
+ *
+ * @param {List}    $breakpoints ($yy-breakpoint-map) - a list of breakpoint names to generate visibility classes for
+ * @param {List}    $classes ($yy-visibility-classes) - a list of classes to generate.
+ *
+ * @example scss
+ *   $breakpoints: (
+ *      small:     (
+ *          mq: "(min-width:  400px) and (max-width:  767px)",
+ *      ),
+ *      medium:    (
+ *          media: screen,
+ *          min-width: 768px,
+ *          max-width: 991px,
+ *      ),
+ *      large-up:  (
+ *          mq: "(min-width:  992px)",
+ *      ),
+ *   );
+ *   @include add-visibility-classes();
+ *   // then use it like ".show-for-large-up" e.g.
+ *
+ */
+@mixin add-visibility-classes($breakpoints: $yy-breakpoint-map, $classes: $yy-visibility-classes) {
+    @each $breakpoint in $breakpoints {
+        @if (index($classes, 'show-for') != null) {
+            .show-for-#{$breakpoint} {
+                @include show-for($breakpoint);
+            }
+        }
+        @if (index($classes, 'visible-for') != null) {
+            .visible-for-#{$breakpoint} {
+                @include block-for($breakpoint);
+            }
+        }
+        @if (index($classes, 'block-for') != null) {
+            .block-for-#{$breakpoint} {
+                @include block-for($breakpoint);
+            }
+        }
+        @if (index($classes, 'inline-for') != null) {
+            .inline-for-#{$breakpoint} {
+                @include inline-for($breakpoint);
+            }
+        }
+        @if (index($classes, 'inline-block-for') != null) {
+            .inline-block-for-#{$breakpoint} {
+                @include inline-block-for($breakpoint);
+            }
+        }
+        @if (index($classes, 'hide-for') != null) {
+            .hide-for-#{$breakpoint} {
+                @include hide-for($breakpoint);
+            }
+        }
+        @if (index($classes, 'hidden-for') != null) {
+            .hidden-for-#{$breakpoint} {
+                @include hide-for($breakpoint);
+            }
+        }
+    }
+}
