@@ -1,0 +1,37 @@
+<div class="page-word">
+    <div class="container">
+        
+        <p class="hint">Your word is:</p>
+
+        <h2 class="word">{{ word }}</h2>
+
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" ng-style="{width: started ? '0%' : '100%'}"></div>
+        </div>
+        
+        <div class="row" ng-if="!started">
+            <div class="question">
+                <p class="question">Ready to go?</p>
+            </div>
+            <div class="button">
+                <button type="button" class="btn btn-lg btn-default" ng-click="start()">Go!</button>
+            </div>
+        </div>
+
+        <div class="row" ng-if="started">
+            <div class="question">
+                <p class="question">Did you guess?</p>
+            </div>
+            <div class="button">
+                <div class="col-xs-6">
+                    <button type="button" class="btn btn-lg btn-success" ng-click="redirect()">Yes</button>
+                </div>
+                <div class="col-xs-6">
+                    <button type="button" class="btn btn-lg btn-danger" ng-click="redirect()">No</button>
+                </div>                
+            </div>
+        </div>
+
+
+    </div>
+</div>

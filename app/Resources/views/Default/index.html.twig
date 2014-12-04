@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>THIS IS MY HOMEPAGE</h1>
-    Homepage.
-{% endblock %}
+    <body ng-app="app" id="body">
+        <div ng-view=""></div>
+    </body>
+{% endblock %}    

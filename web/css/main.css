@@ -1,0 +1,50 @@
+body {
+  font-family: Lato, Helvetica, Arial, sans-serif;
+  font-size: 16px; }
+
+.page-main-menu {
+  text-align: center; }
+  .page-main-menu .title {
+    font-size: 64px;
+    font-weight: bold; }
+  .page-main-menu .image {
+    display: block;
+    margin: 36px auto;
+    width: 300px; }
+  .page-main-menu .btn {
+    font-size: 36px; }
+
+.page-discipline {
+  text-align: center; }
+  .page-discipline .btn {
+    font-size: 36px;
+    display: block;
+    width: 100%;
+    margin: 24px 0; }
+
+.page-word {
+  text-align: center; }
+  .page-word .hint {
+    margin: 120px 0 36px 0;
+    font-size: 24px; }
+  .page-word .word {
+    font-size: 50px;
+    margin-bottom: 50px; }
+  .page-word .question {
+    margin-top: 110px; }
+
+.page-summary {
+  text-align: center; }
+  .page-summary .result {
+    font-size: 24px;
+    margin-top: 130px; }
+  .page-summary .btn {
+    font-size: 36px;
+    display: block;
+    width: 100%;
+    margin: 24px 0; }
+
+.progress-bar {
+  transition: width 60s linear; }
+
+/*# sourceMappingURL=main.css.map */

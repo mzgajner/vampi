@@ -13,3 +13,5 @@
 
 .idea
 .vagrant
+.DS_Store
+.sass-cache
