@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Vampi" default="db">
+    <property name="env" value="dev"/>
+    <property name="dir.app" value="${project.basedir}/app" />
+    <property name="dir.web" value="${project.basedir}/web" />
+    <property name="dir.src" value="${project.basedir}/src" />
+    <property name="dir.build" value="${project.basedir}/build" />
+
+    <target name="install" depends="composer-install, db" />
+    <target name="build" depends="remove-cache, composer-download, composer-install, composer-remove" />
+
+    <target name="composer-download">
+        <exec command="curl -sS https://getcomposer.org/installer | php"
+              checkreturn="true"
+              passthru="true"/>
+        <move file="composer.phar" tofile="composer" />
+        <exec command="chmod +x composer"
+              checkreturn="true"
+              passthru="true"/>
+    </target>
+
+    <target name="composer-remove">
+        <delete file="composer" />
+    </target>
+
+    <target name="remove-cache">
+        <exec command="rm -rf ${dir.app}/cache/*" />
+        <exec command="find ${dir.web}/uploads -name '*.jpg' -type f -delete" />
+    </target>
+
+    <target name="composer-install">
+        <if>
+            <available file="composer" type="file"/>
+            <then>
+                <exec
+                    command="php composer install"
+                    checkreturn="true"
+                    passthru="true"
+                    />
+            </then>
+            <else>
+                <exec
+                    command="composer install"
+                    checkreturn="true"
+                    passthru="true"
+                    />
+            </else>
+        </if>
+    </target>
+
+    <target name="db"
+            description="Creates DB and loads fixtures">
+
+        <SymfonyConsole command="doctrine:database:drop">
+            <arg name="env" value="${env}" />
+            <arg value="--force"/>
+        </SymfonyConsole>
+
+        <SymfonyConsole command="doctrine:database:create"
+                        checkreturn="true">
+            <arg name="env" value="${env}" />
+        </SymfonyConsole>
+
+        <SymfonyConsole command="doctrine:schema:create"
+                        checkreturn="true">
+            <arg name="env" value="${env}" />
+        </SymfonyConsole>
+
+        <SymfonyConsole command="doctrine:fixtures:load"
+                        checkreturn="true">
+            <arg name="env" value="${env}" />
+            <arg value="--no-interaction" />
+        </SymfonyConsole>
+
+    </target>
+
+    <target name="seed"
+            description="Sets application with seed data.">
+
+        <SymfonyConsole command="doctrine:database:drop">
+            <arg name="env" value="${env}" />
+            <arg value="--force"/>
+        </SymfonyConsole>
+
+        <SymfonyConsole command="doctrine:database:create"
+                        checkreturn="true">
+            <arg name="env" value="${env}" />
+        </SymfonyConsole>
+
+        <SymfonyConsole command="doctrine:schema:create"
+                        checkreturn="true">
+            <arg name="env" value="${env}" />
+        </SymfonyConsole>
+
+        <SymfonyConsole command="doctrine:fixtures:load"
+                        checkreturn="true">
+            <arg name="env" value="${env}" />
+            <arg name="fixtures" value="src/AppBundle/DataFixtures/ORM/Seed" />
+            <arg value="--no-interaction" />
+        </SymfonyConsole>
+    </target>
+
+</project>
