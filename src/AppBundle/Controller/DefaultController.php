@@ -51,7 +51,7 @@ class DefaultController extends Controller
         $jsonSession = $request->get('session', null, true);
 
         if (! $jsonSession) {
-            new JsonResponse(['error' => 'no session posted ?!?'], 500);
+            return new JsonResponse(['error' => 'no session posted ?!?'], 500);
         }
 
         $sessionArray = json_decode($jsonSession);
@@ -60,14 +60,14 @@ class DefaultController extends Controller
         $term = $termRepo->find($sessionArray['termId']);
 
         if (!$term) {
-            new JsonResponse(['error' => sprintf('term with id not found?!?', $sessionArray['termId'])], 404);
+            return new JsonResponse(['error' => sprintf('term with id not found?!?', $sessionArray['termId'])], 404);
         }
 
         $disciplineRepo = $this->getDoctrine()->getRepository('AppBundle:Discipline');
         $discipline = $disciplineRepo->findOneBy(['machineName' => $sessionArray['discipline'] ]);
 
         if (!$discipline) {
-            new JsonResponse(['error' => sprintf('discipline with id not found?!?', $sessionArray['discipline'])], 404);
+            return new JsonResponse(['error' => sprintf('discipline with id not found?!?', $sessionArray['discipline'])], 404);
         }
 
         $session = new Session();
