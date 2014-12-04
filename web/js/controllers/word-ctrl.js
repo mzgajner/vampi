@@ -19,11 +19,9 @@
             // post results back here
             time = new Date().getTime() - time;
             Game.save({
-                    session: {
-                        time: time,
-                        termId: $scope.term.id,
-                        discipline: $route.current.params.discipline
-                    }
+                    time: time,
+                    termId: $scope.term.id,
+                    discipline: $route.current.params.discipline
                 },
                 function(response){
                     console.log(response);
