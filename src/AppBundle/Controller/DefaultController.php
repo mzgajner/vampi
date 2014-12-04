@@ -9,6 +9,17 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DefaultController extends Controller
 {
+
+    /**
+     * @Extra\Route("", name="home", methods={"GET"})
+     *
+     * @return array
+     */
+    public function indexAction()
+    {
+        return $this->render(':Default:index.html.twig');
+    }
+
     /**
      * @param Discipline $discipline
      *
