@@ -3,23 +3,25 @@
 
     var BASE_URL = '';
 
-    function EntityFactory($resource)
+    function TermFactory($resource)
     {
         return $resource(
-            BASE_URL + '/:entityType/:id', {
-                entityType: '@entityType',
-                id: '@id',
-                size: 1000
-            }, {
-                query: {
-                    isArray: true
-                }
+            BASE_URL + '/app_dev.php/term/:discipline', {
+                discipline: '@discipline'
             }
         );
     }
 
+    function GameFactory($resource)
+    {
+        return $resource(
+            BASE_URL + '/app_dev.php/game/'
+        );
+    }
+
     angular.module('data', ['ngResource'])
-        .factory('Entity', ['$resource', EntityFactory])
+        .factory('Term', ['$resource', TermFactory])
+        .factory('Game', ['$resource', GameFactory])
     ;
 
 })();

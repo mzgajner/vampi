@@ -3,7 +3,7 @@
         
         <p class="hint">Your word is:</p>
 
-        <h2 class="word">{{ word }}</h2>
+        <h2 class="word">{{ term.text ? term.text : '&nbsp;' }}</h2>
 
         <div class="progress">
             <div class="progress-bar" role="progressbar" ng-style="{width: started ? '0%' : '100%'}"></div>

@@ -1,11 +1,14 @@
 (function () {
     'use strict';
 
-    function WordCtrl($location, $scope) {
+    function WordCtrl(Term, Game, $location, $route, $scope) {
         var time;
 
         $scope.word = 'tralala';
         $scope.started = false;
+        $scope.term = Term.get({
+            discipline: $route.current.params.discipline
+        });
 
         $scope.start = function() {
             $scope.started = true;
@@ -15,11 +18,21 @@
         $scope.redirect = function() {
             // post results back here
             time = new Date().getTime() - time;
-            console.log(time);
-            $location.path('/summary');
+            Game.save({
+                    session: {
+                        time: time,
+                        termId: $scope.term.id,
+                        discipline: $route.current.params.discipline
+                    }
+                },
+                function(response){
+                    console.log(response);
+                    $location.path('/summary');
+            });
+            
         };
     }
 
     angular.module('controllers') // [] instantiates controller module
-           .controller('WordCtrl', ['$location', '$scope', WordCtrl]);
+           .controller('WordCtrl', ['Term', 'Game', '$location', '$route', '$scope', WordCtrl]);
 })();
