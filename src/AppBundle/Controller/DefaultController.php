@@ -42,39 +42,37 @@ class DefaultController extends Controller
     /**
      * @param Request $request
      *
-     * @Extra\Route("/game", name="game", methods={"POST"})
+     * @Extra\Route("/session", name="session", methods={"POST"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function gameAction(Request $request)
+    public function sessionAction(Request $request)
     {
-        $jsonSession = $request->get('session', null, true);
-
-        if (! $jsonSession) {
-            return new JsonResponse(['error' => 'no session posted ?!?'], 500);
+        if (! $request->getContent()) {
+            return new JsonResponse(['error' => 'no content posted ?!?'], 500);
         }
 
-        $sessionArray = json_decode($jsonSession);
+        $content = json_decode($request->getContent(), true);
 
         $termRepo = $this->getDoctrine()->getRepository('AppBundle:Term');
-        $term = $termRepo->find($sessionArray['termId']);
+        $term = $termRepo->find($content['termId']);
 
         if (!$term) {
-            return new JsonResponse(['error' => sprintf('term with id not found?!?', $sessionArray['termId'])], 404);
+            return new JsonResponse(['error' => sprintf('term with id not found?!?', $content['termId'])], 404);
         }
 
         $disciplineRepo = $this->getDoctrine()->getRepository('AppBundle:Discipline');
-        $discipline = $disciplineRepo->findOneBy(['machineName' => $sessionArray['discipline'] ]);
+        $discipline = $disciplineRepo->findOneBy(['machineName' => $content['discipline'] ]);
 
         if (!$discipline) {
-            return new JsonResponse(['error' => sprintf('discipline with id not found?!?', $sessionArray['discipline'])], 404);
+            return new JsonResponse(['error' => sprintf('discipline with id not found?!?', $content['discipline'])], 404);
         }
 
         $session = new Session();
         $session
             ->setDiscipline($discipline)
             ->setTerm($term)
-            ->setTime($sessionArray['time'])
+            ->setTime($content['time'])
         ;
         $this->getDoctrine()->getManager()->persist($session);
         $this->getDoctrine()->getManager()->flush();
