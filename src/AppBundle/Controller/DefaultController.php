@@ -25,4 +25,21 @@ class DefaultController extends Controller
 
         return new JsonResponse($term->toJsonArray());
     }
+
+    /**
+     * @param Discipline $discipline
+     *
+     * @Extra\Route("/term/{discipline}", name="play", methods={"POST"})
+     * @Extra\ParamConverter("discipline", class="AppBundle:Discipline", options={"mapping": {"discipline" = "machineName"}})
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function playAction(Discipline $discipline = null)
+    {
+        $termRepo = $this->getDoctrine()->getRepository('AppBundle:Term');
+
+        $term = $termRepo->findRandomTerm($discipline);
+
+        return new JsonResponse($term->toJsonArray());
+    }
 }
