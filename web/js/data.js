@@ -12,16 +12,16 @@
         );
     }
 
-    function GameFactory($resource)
+    function SessionFactory($resource)
     {
         return $resource(
-            BASE_URL + '/app_dev.php/game/'
+            BASE_URL + '/app_dev.php/session/'
         );
     }
 
     angular.module('data', ['ngResource'])
         .factory('Term', ['$resource', TermFactory])
-        .factory('Game', ['$resource', GameFactory])
+        .factory('Session', ['$resource', SessionFactory])
     ;
 
 })();
