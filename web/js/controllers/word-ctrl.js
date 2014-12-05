@@ -2,7 +2,8 @@
     'use strict';
 
     function WordCtrl(Term, Session, $location, $route, $scope) {
-        var time;
+        var time,
+            soundEffect = new Audio('/mp3/bike.mp3');
 
         $scope.word = 'tralala';
         $scope.started = false;
@@ -17,7 +18,8 @@
         };
 
         $('.progress-bar').on('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(){
-            new Audio('/mp3/bike.mp3').play();
+            soundEffect.play();
+            window.navigator.vibrate([200, 100, 200, 100, 200]);
             $(this).unbind('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend');
         });
 
