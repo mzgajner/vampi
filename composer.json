@@ -20,7 +20,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "jms/serializer-bundle": "~0.13",
         "hautelook/alice-bundle": "~0.2",
-        "misd/guzzle-bundle": "~1.0"
+        "misd/guzzle-bundle": "~1.0",
+        "phing/phing": "2.*"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
