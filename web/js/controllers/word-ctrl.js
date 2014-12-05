@@ -12,6 +12,8 @@
             language: $route.current.params.language
         });
 
+        $scope.discipline = $route.current.params.discipline;
+
         $scope.start = function() {
             $scope.state = 'playing';
             time = new Date().getTime();
