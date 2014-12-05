@@ -101,19 +101,31 @@
 
         <SymfonyConsole command="vampi:fill"
                         checkreturn="true">
-            <arg value="http://www.rtvslo.si/" />
+            <arg value="http://med.over.net/forum5/read.php?21,1092255" />
             <arg value="sl" />
         </SymfonyConsole>
 
+        <!--<SymfonyConsole command="vampi:fill"-->
+                        <!--checkreturn="true">-->
+            <!--<arg value="http://www.english-zone.com/language/english.html" />-->
+            <!--<arg value="en" />-->
+        <!--</SymfonyConsole>-->
+
+        <!--<SymfonyConsole command="vampi:fill"-->
+                        <!--checkreturn="true">-->
+            <!--<arg value="http://www.blick.ch/news" />-->
+            <!--<arg value="de" />-->
+        <!--</SymfonyConsole>-->
+
         <SymfonyConsole command="vampi:fill"
                         checkreturn="true">
-            <arg value="http://www.english-zone.com/language/english.html" />
+            <arg value="https://astina.ch/e-business/" />
             <arg value="en" />
         </SymfonyConsole>
 
         <SymfonyConsole command="vampi:fill"
                         checkreturn="true">
-            <arg value="http://www.blick.ch/news" />
+            <arg value="https://astina.ch/de/e-business/" />
             <arg value="de" />
         </SymfonyConsole>
 

@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityRepository;
 class TermRepository extends EntityRepository
 {
     /**
+     * @param string $lang
      * @param Discipline $discipline
      *
      * @return Term
@@ -20,19 +21,23 @@ class TermRepository extends EntityRepository
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findRandomTerm(Discipline $discipline = null)
+    public function findRandomTerm($lang, Discipline $discipline = null)
     {
         //Retrieve the EntityManager first
         $em = $this->getEntityManager();
 
         //Get the number of rows from your table
-        $rows = $em->createQuery('SELECT COUNT(t.id) FROM AppBundle:Term t')->getSingleScalarResult();
-        $offset = max(0, rand(0, $rows));
+        $rows = $em->createQuery('SELECT COUNT(t.id) FROM AppBundle:Term t WHERE t.lang = :lang')
+            ->setParameter('lang', $lang)
+            ->getSingleScalarResult()
+        ;
+        $offset = max(0, rand(0, $rows - 1));
 
         //Get the first term starting from a random point
-        $query = $em->createQuery('SELECT t FROM AppBundle:Term t')
+        $query = $em->createQuery('SELECT t FROM AppBundle:Term t WHERE t.lang = :lang')
             ->setMaxResults(1)
             ->setFirstResult($offset)
+            ->setParameter('lang', $lang)
         ;
 
         return $query->getSingleResult();

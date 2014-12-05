@@ -21,6 +21,8 @@ class FillCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        mb_internal_encoding('UTF-8');
+
         $url = $input->getArgument('url');
         $lang = $input->getArgument('lang');
 
@@ -33,10 +35,15 @@ class FillCommand extends ContainerAwareCommand
 
         $text = mb_ereg_replace('<style\b[^>]*>(.*?)<\/style>', ' ', $text);
         $text = mb_ereg_replace('<script\b[^>]*>(.*?)<\/script>', ' ', $text);
-        $text = strip_tags($text);
 
-        $text = mb_ereg_replace('\|', ' ', $text);
+        $text = mb_ereg_replace('\<', ' <', $text);
+
+        $text = strip_tags($text);
+        $text = html_entity_decode($text);
+
+        $text = mb_ereg_replace('[\|\]\[]', ' ', $text);
         $text = mb_ereg_replace('[^A-Ža-ž]', ' ', $text);
+//        $text = preg_replace('/\P{L}/', ' ', $text);
         $text = mb_ereg_replace('\s+', ' ', $text);
 
         $words = explode(' ', $text);
@@ -44,6 +51,7 @@ class FillCommand extends ContainerAwareCommand
         $w = null;
         $terms = [];
         $em = $this->getContainer()->get('doctrine')->getManager();
+        $termRepo = $this->getContainer()->get('doctrine')->getRepository('AppBundle:Term');
 
         foreach ($words as $word) {
             if (mb_strlen($word, 'UTF-8') <= 3) {
@@ -63,23 +71,33 @@ class FillCommand extends ContainerAwareCommand
 
             if (!in_array($w, $terms, true)) {
                 $terms[] = $w;
+
+                if ($termRepo->findOneBy(array('text' => $w, 'lang' => $lang))) {
+                    continue;
+                }
+
                 $termObj = new Term($w, $lang);
                 try {
                     $em->persist($termObj);
                     $em->flush();
-                } catch (\Exception $e) {}
+                } catch (\Exception $e) {
+                    $em = $this->getContainer()->get('doctrine')->getManager();
+                    $output->writeln($e->getMessage() . ' [' . $w . ']');
+                }
             }
         }
     }
 
     private function getStopWords($lang) {
+
         $stopWords = array(
             'sl' => array("ali","ampak","brez","čeprav","čez","enako","isto","kadar","kaj","kajti","kakor","kdo","ker","kot","marsikaj","mnogo","namreč","nasproti","neko","nisem","niti","okoli","okrog","oziroma","prav","pred","preden","razen","sem","sicer","sploh","tega","temle","temveč","ter","toda","torej","tudi","vendar","verjetno","zakaj","zares","zlasti"),
             'en' => array("a","about","above","after","again","against","all","am","an","and","any","are","aren't","as","at","be","because","been","before","being","below","between","both","but","by","can't","cannot","could","couldn't","did","didn't","do","does","doesn't","doing","don't","down","during","each","few","for","from","further","had","hadn't","has","hasn't","have","haven't","having","he","he'd","he'll","he's","her","here","here's","hers","herself","him","himself","his","how","how's","i","i'd","i'll","i'm","i've","if","in","into","is","isn't","it","it's","its","itself","let's","me","more","most","mustn't","my","myself","no","nor","not","of","off","on","once","only","or","other","ought","our","ours	ourselves","out","over","own","same","shan't","she","she'd","she'll","she's","should","shouldn't","so","some","such","than","that","that's","the","their","theirs","them","themselves","then","there","there's","these","they","they'd","they'll","they're","they've","this","those","through","to","too","under","until","up","very","was","wasn't","we","we'd","we'll","we're","we've","were","weren't","what","what's","when","when's","where","where's","which","while","who","who's","whom","why","why's","with","won't","would","wouldn't","you","you'd","you'll","you're","you've","your","yours","yourself","yourselves"),
             'de' => array("aber","als","am","an","auch","auf","aus","bei","bin","bis","bist","da","dadurch","daher","darum","das","daß","dass","dein","deine","dem","den","der","des","dessen","deshalb","die","dies","dieser","dieses","doch","dort","du","durch","ein","eine","einem","einen","einer","eines","er","es","euer","eure","für","hatte","hatten","hattest","hattet","hier	hinter","ich","ihr","ihre","im","in","ist","ja","jede","jedem","jeden","jeder","jedes","jener","jenes","jetzt","kann","kannst","können","könnt","machen","mein","meine","mit","muß","mußt","musst","müssen","müßt","nach","nachdem","nein","nicht","nun","oder","seid","sein","seine","sich","sie","sind","soll","sollen","sollst","sollt","sonst","soweit","sowie","und","unser	unsere","unter","vom","von","vor","wann","warum","was","weiter","weitere","wenn","wer","werde","werden","werdet","weshalb","wie","wieder","wieso","wir","wird","wirst","wo","woher","wohin","zu","zum","zur","über"),
+            'common' => array('nbsp', 'ndash'),
         );
 
-        return $stopWords[$lang];
+        return array_merge($stopWords[$lang], $stopWords['common']);
     }
 }
 

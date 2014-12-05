@@ -24,17 +24,20 @@ class DefaultController extends Controller
 
     /**
      * @param Discipline $discipline
+     * @param Request $request
      *
      * @Extra\Route("/term/{discipline}", name="term", methods={"GET"})
      * @Extra\ParamConverter("discipline", class="AppBundle:Discipline", options={"mapping": {"discipline" = "machineName"}})
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function termAction(Discipline $discipline = null)
+    public function termAction(Request $request, Discipline $discipline = null)
     {
+        $lang = $request->get('language', 'en');
+
         $termRepo = $this->getDoctrine()->getRepository('AppBundle:Term');
 
-        $term = $termRepo->findRandomTerm($discipline);
+        $term = $termRepo->findRandomTerm($lang, $discipline);
 
         return new JsonResponse($term->toJsonArray());
     }

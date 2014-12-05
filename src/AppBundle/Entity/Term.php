@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Term
  *
- * @ORM\Table()
+ * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="search_idx", columns={"text", "lang"})})
  * @ORM\Entity(repositoryClass="AppBundle\Entity\TermRepository")
  */
 class Term
@@ -25,7 +25,7 @@ class Term
     /**
      * @var string
      *
-     * @ORM\Column(name="text", type="string", length=255, unique=true)
+     * @ORM\Column(name="text", type="string", length=255)
      */
     private $text;
 
