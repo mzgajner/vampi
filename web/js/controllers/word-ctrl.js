@@ -6,14 +6,14 @@
             soundEffect = new Audio('/mp3/bike.mp3');
 
         $scope.word = 'tralala';
-        $scope.started = false;
+        $scope.state = 'waiting';
         $scope.term = Term.get({
             discipline: $route.current.params.discipline,
             language: $route.current.params.language
         });
 
         $scope.start = function() {
-            $scope.started = true;
+            $scope.state = 'playing';
             time = new Date().getTime();
         };
 
@@ -25,6 +25,7 @@
 
         $scope.redirect = function() {
             // post results back here
+            $scope.state = 'sending';
             time = new Date().getTime() - time;
             Session.save({
                     time: time,

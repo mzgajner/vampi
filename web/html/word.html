@@ -9,27 +9,40 @@
             <div class="progress-bar" role="progressbar" ng-style="{width: started ? '0%' : '100%'}"></div>
         </div>
         
-        <div class="row" ng-if="!started">
-            <div class="question col-xs-12">
-                <p>Ready to go?</p>
-            </div>
-            <div class="buttons col-xs-12">
-                <button type="button" class="btn btn-lg btn-default" ng-click="start()">Go!</button>
-            </div>
-        </div>
-
-        <div class="row" ng-if="started">
-            <div class="question col-xs-12">
-                <p>Did you guess?</p>
-            </div>
-            <div class="buttons">
-                <div class="col-xs-6">
-                    <button type="button" class="btn btn-lg btn-success" ng-click="redirect()">Yes</button>
+        <div ng-switch="state">
+            <div class="row" ng-switch-when="waiting">
+                <div class="question col-xs-12">
+                    <p>Ready to go?</p>
                 </div>
-                <div class="col-xs-6">
-                    <button type="button" class="btn btn-lg btn-danger" ng-click="redirect()">No</button>
-                </div>                
+                <div class="buttons col-xs-12">
+                    <button type="button" class="btn btn-lg btn-default" ng-click="start()">Go!</button>
+                </div>
             </div>
+
+            <div class="row" ng-switch-when="playing">
+                <div class="question col-xs-12">
+                    <p>Did you guess?</p>
+                </div>
+                <div class="buttons">
+                    <div class="col-xs-6">
+                        <button type="button" class="btn btn-lg btn-success" ng-click="redirect()">Yes</button>
+                    </div>
+                    <div class="col-xs-6">
+                        <button type="button" class="btn btn-lg btn-danger" ng-click="redirect()">No</button>
+                    </div>                
+                </div>
+            </div>
+
+            <div class="row" ng-switch-when="sending">
+                <div class="question col-xs-12">
+                    <p>Sending results...</p>
+                </div>
+                <div class="buttons">
+                    <div class="col-xs-12">
+                        <img class="throbber" src="/img/throbber.svg" alt="">
+                    </div>                
+                </div>
+            </div>            
         </div>
 
 

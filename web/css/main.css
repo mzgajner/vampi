@@ -276,5 +276,8 @@ main {
     @media (min-width: 768px) {
       .page-word .question p {
         font-size: 29.12461px; } }
+.page-word .throbber {
+  margin: 24px auto;
+  height: 81px; }
 
 /*# sourceMappingURL=main.css.map */
