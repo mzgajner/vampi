@@ -16,6 +16,11 @@
             time = new Date().getTime();
         };
 
+        $('.progress-bar').on('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(){
+            new Audio('/mp3/bike.mp3').play();
+            $(this).unbind('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend');
+        });
+
         $scope.redirect = function() {
             // post results back here
             time = new Date().getTime() - time;
