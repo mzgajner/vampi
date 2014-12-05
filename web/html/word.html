@@ -6,7 +6,7 @@
         <h2 class="word">{{ term.text ? term.text : '&nbsp;' }}</h2>
 
         <div class="progress">
-            <div class="progress-bar" role="progressbar" ng-style="{width: started ? '0%' : '100%'}"></div>
+            <div class="progress-bar" role="progressbar" ng-style="{width: state == 'waiting' ? '100%' : '0%'}"></div>
         </div>
         
         <div ng-switch="state">
