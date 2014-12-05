@@ -13,6 +13,4 @@ multext-east   french      lem-me-fr.bin
 multext-east   hungarian   lem-me-hu.bin
 multext-east   romanian    lem-me-ro.bin
 multext-east   slovene     lem-me-sl.bin
-multext-east   serbian     lem-me-sr.bin	
-	
-	
+multext-east   serbian     lem-me-sr.bin
