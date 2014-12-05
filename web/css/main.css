@@ -227,11 +227,18 @@ main {
     width: 767px !important; } }
 
 .progress {
-  background-color: transparent; }
+  background-color: transparent;
+  border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(198, 168, 174, 0.2);
+  box-shadow: none;
+  -webkit-box-shadow: none; }
 
 .progress-bar {
   transition: width 60s linear;
-  background-color: #fff; }
+  background-color: #fff;
+  box-shadow: none;
+  -webkit-box-shadow: none; }
 
 .page-main-menu, .page-discipline, .page-word, .page-summary {
   text-align: center;
@@ -241,7 +248,8 @@ main {
     .page-main-menu, .page-discipline, .page-word, .page-summary {
       width: auto; } }
   .page-main-menu .btn, .page-discipline .btn, .page-word .btn, .page-summary .btn {
-    font-size: 28px;
+    font-size: 18px;
+    height: 80px;
     display: block;
     width: 100%;
     margin: 24px 0;
@@ -249,28 +257,32 @@ main {
     border: 1px solid rgba(255, 255, 255, 0.7);
     font-weight: 300;
     color: #fff;
-    letter-spacing: 1px; }
+    letter-spacing: 2.4px;
+    text-transform: uppercase;
+    border-radius: 0; }
     @media (min-width: 768px) {
       .page-main-menu .btn, .page-discipline .btn, .page-word .btn, .page-summary .btn {
-        font-size: 45.30495px;
+        font-size: 29.12461px;
         max-width: 400px;
         margin: 24px auto; } }
     .page-main-menu .btn:hover, .page-main-menu .btn:active, .page-main-menu .btn:focus, .page-discipline .btn:hover, .page-discipline .btn:active, .page-discipline .btn:focus, .page-word .btn:hover, .page-word .btn:active, .page-word .btn:focus, .page-summary .btn:hover, .page-summary .btn:active, .page-summary .btn:focus {
       outline: none; }
   .page-main-menu .text, .page-discipline .text, .page-word .text, .page-summary .text {
-    font-size: 24px;
-    letter-spacing: 4px;
-    font-variant: small-caps;
-    text-transform: lowercase; }
+    font-size: 18px;
+    letter-spacing: 2.4px;
+    text-transform: uppercase;
+    margin: 110px 0 120px 0; }
     @media (min-width: 768px) {
       .page-main-menu .text, .page-discipline .text, .page-word .text, .page-summary .text {
-        font-size: 38.83282px; } }
+        font-size: 29.12461px; } }
 
 .page-main-menu .title {
-  font-size: 48px;
+  font-size: 72px;
   font-weight: 300;
   text-transform: uppercase;
-  letter-spacing: 4px; }
+  letter-spacing: 24px;
+  padding-left: 15px;
+  margin: 0 -15px; }
   @media (min-width: 768px) {
     .page-main-menu .title {
       font-size: 77.66563px; } }
@@ -283,12 +295,14 @@ main {
       width: 404.5085px; } }
 
 .page-word .word {
-  font-size: 50px;
+  font-size: 36px;
   font-weight: 300;
-  margin-bottom: 50px; }
+  letter-spacing: 4.8px;
+  margin: -100px 0 50px 0;
+  text-transform: uppercase; }
   @media (min-width: 768px) {
     .page-word .word {
-      font-size: 80.9017px; } }
+      font-size: 58.24922px; } }
 .page-word .question {
   margin-top: 110px; }
   .page-word .question p {

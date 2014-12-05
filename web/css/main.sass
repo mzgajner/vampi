@@ -35,11 +35,17 @@ main
 
 .progress
     background-color: transparent
+    border-radius: 0
+    border: 1px solid rgba($white, 0.7)
+    background: rgba($pinky, 0.2)
+    box-shadow: none
+    -webkit-box-shadow: none
 
 .progress-bar
     transition: width 60s linear
     background-color: $white
-
+    box-shadow: none
+    -webkit-box-shadow: none
 
 .page-main-menu, .page-discipline, .page-word, .page-summary
     text-align: center
@@ -48,7 +54,8 @@ main
     +respond-to(medium-up)
         width: auto
     .btn
-        font-size: 28px
+        font-size: 18px
+        height: 80px
         display: block
         width: 100%
         margin: 24px 0
@@ -56,9 +63,11 @@ main
         border: 1px solid rgba($white, 0.7)
         font-weight: 300
         color: $white
-        letter-spacing: 1px
+        letter-spacing: 2.4px
+        text-transform: uppercase
+        border-radius: 0
         +respond-to(medium-up)
-            font-size: 28px * $golden-ratio
+            font-size: 18px * $golden-ratio
             max-width: 400px
             margin: 24px auto
             
@@ -66,22 +75,24 @@ main
             outline: none
 
     .text
-        font-size: 24px
-        letter-spacing: 4px
-        font-variant: small-caps
-        text-transform: lowercase
+        font-size: 18px
+        letter-spacing: 2.4px
+        text-transform: uppercase
+        margin: 110px 0 120px 0
         +respond-to(medium-up)
-            font-size: 24px * $golden-ratio
+            font-size: 18px * $golden-ratio
 
 .page-main-menu
     .title
-        font-size: 48px
+        font-size: 72px
         +respond-to(medium-up)
             font-size: 48px * $golden-ratio
 
         font-weight: 300
         text-transform: uppercase
-        letter-spacing: 4px
+        letter-spacing: 24px
+        padding-left: 15px
+        margin: 0 -15px
 
     .image
         display: block
@@ -92,11 +103,13 @@ main
         
 .page-word
     .word
-        font-size: 50px
+        font-size: 36px
         font-weight: 300
-        margin-bottom: 50px
+        letter-spacing: 4.8px
+        margin: -100px 0 50px 0
+        text-transform: uppercase
         +respond-to(medium-up)
-            font-size: 50px * $golden-ratio    
+            font-size: 36px * $golden-ratio    
         
     .question
         margin-top: 110px
