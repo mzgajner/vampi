@@ -1,0 +1,6 @@
+<div class="page-discipline">
+    <div class="container">
+        <p class="text">Pick a language:</p>
+        <button ng-repeat="language in languages" type="button" class="btn btn-lg btn-default" ng-click="redirect(language.id)">{{ language.name }}</button>
+    </div>
+</div>

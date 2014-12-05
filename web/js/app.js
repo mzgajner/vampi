@@ -10,15 +10,19 @@
                 controller: 'MainMenuCtrl',
                 // reloadOnSearch: false
             })
-            .when('/discipline', {
+            .when('/language', {
+                templateUrl: TEMPLATES_PATH  + '/language.html',
+                controller: 'LanguageCtrl',
+            })
+            .when('/:language/discipline', {
                 templateUrl: TEMPLATES_PATH  + '/discipline.html',
                 controller: 'DisciplineCtrl',
             })
-            .when('/word/:discipline', {
+            .when('/:language/:discipline/word', {
                 templateUrl: TEMPLATES_PATH  + '/word.html',
                 controller: 'WordCtrl',
             })
-            .when('/summary/', {
+            .when('/:language/summary', {
                 templateUrl: TEMPLATES_PATH  + '/summary.html',
                 controller: 'SummaryCtrl',
             })

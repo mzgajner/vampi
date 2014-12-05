@@ -7,7 +7,8 @@
         $scope.word = 'tralala';
         $scope.started = false;
         $scope.term = Term.get({
-            discipline: $route.current.params.discipline
+            discipline: $route.current.params.discipline,
+            language: $route.current.params.language
         });
 
         $scope.start = function() {
@@ -21,10 +22,11 @@
             Session.save({
                     time: time,
                     termId: $scope.term.id,
-                    discipline: $route.current.params.discipline
+                    discipline: $route.current.params.discipline,
+                    language: $route.current.params.language
                 },
                 function(response){
-                    $location.path('/summary');
+                    $location.path('/' + $route.current.params.language + '/summary');
             });
             
         };

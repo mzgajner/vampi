@@ -3,7 +3,7 @@
 
     function MainMenuCtrl($location, $scope) {
         $scope.redirect = function() {
-            $location.path('/discipline');
+            $location.path('/language');
         }
     }
 
