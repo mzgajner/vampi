@@ -10,8 +10,12 @@ html, body
     height: 100%
 
 body
-    font-family: Open Sans, Helvetica, Arial, sans-serif
+    font-family: Source Sans Pro, Helvetica, Arial, sans-serif
     font-size: 16px
+    font-weight: 300
+    background-image: url('/img/background.jpg')
+    background-size: cover
+    color: $white
     
 p
     margin: 0
@@ -29,9 +33,12 @@ main
     +respond-to(medium-up)
         width: 767px !important
 
+.progress
+    background-color: transparent
+
 .progress-bar
     transition: width 60s linear
-    background-color: #333
+    background-color: $white
 
 
 .page-main-menu, .page-discipline, .page-word, .page-summary
@@ -45,13 +52,24 @@ main
         display: block
         width: 100%
         margin: 24px 0
+        background: rgba($pinky, 0.2)
+        border: 1px solid rgba($white, 0.7)
+        font-weight: 300
+        color: $white
+        letter-spacing: 1px
         +respond-to(medium-up)
             font-size: 28px * $golden-ratio
             max-width: 400px
             margin: 24px auto
+            
+        &:hover, &:active, &:focus
+            outline: none
 
     .text
         font-size: 24px
+        letter-spacing: 4px
+        font-variant: small-caps
+        text-transform: lowercase
         +respond-to(medium-up)
             font-size: 24px * $golden-ratio
 
@@ -61,7 +79,9 @@ main
         +respond-to(medium-up)
             font-size: 48px * $golden-ratio
 
-        font-weight: bold
+        font-weight: 300
+        text-transform: uppercase
+        letter-spacing: 4px
 
     .image
         display: block
@@ -73,6 +93,7 @@ main
 .page-word
     .word
         font-size: 50px
+        font-weight: 300
         margin-bottom: 50px
         +respond-to(medium-up)
             font-size: 50px * $golden-ratio    
@@ -81,6 +102,10 @@ main
         margin-top: 110px
         p
             font-size: 18px
+            letter-spacing: 4px
+            font-variant: small-caps
+            text-transform: lowercase
+
             +respond-to(medium-up)
                 font-size: 18px * $golden-ratio
                 
